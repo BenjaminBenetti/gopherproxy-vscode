@@ -1,6 +1,6 @@
 {
   "name": "gopherproxy-vscode",
-  "displayName": "gopherproxy-vscode",
+  "displayName": "GopherProxy",
   "description": "Use gopherproxy from inside vscode!",
   "version": "0.0.1",
   "engines": {
@@ -17,8 +17,18 @@
     "viewsContainers": {
       "panel": [
         {
-          "id": "gopherproxy-view",
-          "title": "GopherProxy"
+          "id": "gopherproxy-forwards-view",
+          "title": "Gopher Proxy",
+          "icon": "call-outgoing"
+        }
+      ]
+    },
+    "views": {
+      "gopherproxy-forwards-view": [
+        {
+          "type": "webview",
+          "id": "gopherproxy-forwards-view",
+          "name": "GopherProxy Forwards"
         }
       ]
     }
