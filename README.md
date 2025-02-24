@@ -1,6 +1,6 @@
 # GopherProxy vscode Extension
 
-This vscode extension provides a interface for [gopherproxy](https://github.com/BenjaminBenetti/gopherproxy) that you can use
+This vscode extension provides an interface for [gopherproxy](https://github.com/BenjaminBenetti/gopherproxy) that you can use
 from inside vscode. This provides similar functionality to the `ports` tab, but allows you to directly tunnel multiple systems
 together through a [gopherproxy](https://github.com/BenjaminBenetti/gopherproxy) server.
 
