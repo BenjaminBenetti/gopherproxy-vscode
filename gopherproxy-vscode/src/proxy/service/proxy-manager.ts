@@ -23,12 +23,11 @@ export class ProxyManager {
   }
 
   public async getCliPath(): Promise<string> {
-    return (
-      this._cliPath ??
-      new GopherProxyCliDownLoader().ensureMostRecentGopherProxyCli(
+    this._cliPath ??=
+      await new GopherProxyCliDownLoader().ensureMostRecentGopherProxyCli(
         this._vscodeContext!
-      )
-    );
+      );
+    return this._cliPath;
   }
 
   // =======================================
