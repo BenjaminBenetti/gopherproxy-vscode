@@ -1,14 +1,35 @@
 import { ChannelState } from "../model/channel-state";
 import { ProxyClientOptions } from "../model/proxy-client-options";
+import { GopherProxyCliDownLoader } from "./gopherproxy-cli-downloader";
+import * as vscode from "vscode";
 
 export class ProxyManager {
+  private _vscodeContext: vscode.ExtensionContext | undefined;
   private _proxyOptions: ProxyClientOptions | undefined;
   private _proxyChannelState: ChannelState | undefined;
   private _connected: boolean = false;
+  private _cliPath: string | undefined;
 
   // =======================================
   // Public Methods
   // =======================================
+
+  public initialize(
+    vsContext: vscode.ExtensionContext,
+    proxyOptions: ProxyClientOptions
+  ): void {
+    this._vscodeContext = vsContext;
+    this._proxyOptions = proxyOptions;
+  }
+
+  public async getCliPath(): Promise<string> {
+    return (
+      this._cliPath ??
+      new GopherProxyCliDownLoader().ensureMostRecentGopherProxyCli(
+        this._vscodeContext!
+      )
+    );
+  }
 
   // =======================================
   // Setters
@@ -20,6 +41,10 @@ export class ProxyManager {
 
   set proxyChannelState(state: ChannelState | undefined) {
     this._proxyChannelState = state;
+  }
+
+  set vscodeContext(context: vscode.ExtensionContext) {
+    this._vscodeContext = context;
   }
 
   // =======================================

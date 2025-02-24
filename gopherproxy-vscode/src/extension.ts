@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
+import * as child_process from "child_process";
 import { GopherProxyForwardsView } from "./views/gopherproxy-forwards-view";
 import { ProxyManager } from "./proxy/service/proxy-manager";
 import { ProxyState } from "./proxy/service/proxy-state";
@@ -59,6 +60,28 @@ export function activate(context: vscode.ExtensionContext) {
     ],
   };
 
+  // ====== Init ======
+  proxyManager.initialize(
+    context,
+    // ====== FIXED OPTIONS FOR TESTING =========
+    // TODO pull from https://code.visualstudio.com/api/references/vscode-api#ExtensionContext.workspaceState
+    // and or extension settings for defaults, like proxyServer
+    {
+      proxyServer: "ws://proxy.bbenetti.ca:8080",
+      clientName: "vscode",
+      channelName: "gopherproxy",
+      channelPassword: "password",
+      forwardingRules: [
+        {
+          localPort: 8080,
+          remoteClient: "other-client",
+          remoteHost: "localhost",
+          remotePort: 8080,
+        },
+      ],
+    }
+  );
+
   // ====== Register Views ======
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
@@ -66,6 +89,12 @@ export function activate(context: vscode.ExtensionContext) {
       gopherProxyForwardsView
     )
   );
+
+  // ====== testing tmp =========
+  proxyManager.getCliPath().then((cliPath) => {
+    console.log("CLI Path: ", cliPath);
+    console.log(child_process.execFileSync(cliPath, ["--help"]).toString());
+  });
 }
 
 // This method is called when your extension is deactivated
